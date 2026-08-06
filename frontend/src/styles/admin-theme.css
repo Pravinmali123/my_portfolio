@@ -1,0 +1,266 @@
+/* ============================================================
+   ADMIN PANEL — FULL RESPONSIVE LAYER (LAYOUT ONLY)
+   No colors / backgrounds / borders / fonts are changed here —
+   only layout, spacing, sizing at extra breakpoints so the
+   existing design adapts cleanly to every screen size.
+   ============================================================ */
+
+/* ---------- Fluid spacing/type (no color, just size) ---------- */
+.a-content { padding: clamp(1rem, 2.4vw, 1.5rem); }
+.a-page-title { font-size: clamp(1.15rem, 1vw + 0.9rem, 1.5rem); }
+.stat-val { font-size: clamp(1.4rem, 1.6vw + 1rem, 2rem); }
+.a-card-title { font-size: clamp(0.85rem, 0.3vw + 0.8rem, 0.95rem); }
+
+/* ============ 1440px : laptop ============ */
+@media (max-width: 1440px) {
+  .stats-row { grid-template-columns: repeat(4, 1fr); gap: 0.85rem; }
+  .a-sidebar { width: 200px; }
+}
+
+/* ============ 1200px : small laptop ============ */
+@media (max-width: 1200px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .a-sidebar { width: 190px; padding: 1rem 0.6rem; }
+  .a-nav { padding: 0.75rem 1.1rem; }
+}
+
+/* ============ 1024px : tablet landscape ============ */
+@media (max-width: 1024px) {
+  .a-sidebar { width: 76px; overflow: visible; }
+  .a-menu-section { display: none; }
+  .a-menu-item { justify-content: center; gap: 0; padding: 0.65rem; }
+  .a-menu-item > span:not(.a-menu-icon) { display: none; }
+  .a-nav-user { display: none; }
+  .a-content { padding: 1.1rem; }
+  .form-row2 { gap: 0.7rem; }
+}
+
+/* ============ 900px (existing breakpoint, extended) ============ */
+@media (max-width: 900px) {
+  .stats-row { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .a-sidebar { width: 190px; }
+  .a-page-header { flex-wrap: wrap; gap: 0.75rem; }
+}
+
+/* ============ 820px : tablet portrait — sidebar becomes a top bar ============ */
+@media (max-width: 820px) {
+  .a-body { flex-direction: column; }
+  .a-sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 0.4rem;
+    padding: 0.7rem;
+  }
+  .a-sidebar::-webkit-scrollbar { display: none; }
+  .a-menu-section { display: none; }
+  .a-menu-item {
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.62rem;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0;
+    white-space: nowrap;
+  }
+  .a-menu-item > span:not(.a-menu-icon) { display: block; } /* show label again in stacked tab form */
+  .a-menu-icon { font-size: 1rem; width: auto; }
+  .a-content { min-width: 0; }
+}
+
+/* ============ 680px (existing breakpoint, extended) ============ */
+@media (max-width: 680px) {
+  .a-body { flex-direction: column; }
+  .stats-row { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .form-row2 { grid-template-columns: 1fr; }
+  .a-nav-user { display: none; }
+  .a-page-header { flex-direction: column; align-items: flex-start; }
+  .a-add-btn { width: 100%; justify-content: center; }
+
+  /* ---- Table → Card conversion on mobile ----
+     !important is required here because global.css defines an
+     unconditional `.table-scroll table{min-width:600px}` rule that
+     ends up LATER than this file in the final bundled CSS (same
+     selector specificity), which would otherwise win and keep the
+     table locked at 600px wide on phones, breaking the card layout. */
+  .table-scroll { overflow-x: visible !important; }
+  .table-scroll table { min-width: 0 !important; }
+  .table-scroll thead { display: none !important; }
+  .table-scroll table, .table-scroll tbody, .table-scroll tr {
+    display: block !important;
+    width: 100% !important;
+  }
+  .table-scroll td { display: flex !important; width: 100% !important; }
+  .table-scroll tr {
+    margin-bottom: 0.8rem;
+    padding: 0.85rem 0.9rem;
+    border-radius: var(--r-base, 12px);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .table-scroll tr:last-child { margin-bottom: 0; }
+  .table-scroll td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    text-align: right;
+    white-space: normal;
+  }
+  .table-scroll td:last-child { border-bottom: none !important; }
+  .table-scroll td[data-label]::before {
+    content: attr(data-label);
+    font-weight: 600;
+    text-align: left;
+    flex-shrink: 0;
+  }
+  .table-scroll .td-actions { justify-content: flex-end !important; gap: 0.5rem; }
+  .table-scroll .td-drag { display: none; }
+}
+
+/* ============ 560px : large mobile ============ */
+@media (max-width: 560px) {
+  .a-nav { padding: 0.65rem 0.9rem; flex-wrap: wrap; row-gap: 0.5rem; }
+  .a-nav-right { width: 100%; justify-content: space-between; }
+  .a-nav-badge { display: none; }
+  .stat-c { padding: 1rem; }
+  .modal-body, .modal-head { padding-left: 1.1rem; padding-right: 1.1rem; }
+  .del-actions, .form-actions { flex-wrap: wrap; }
+  .del-actions button, .form-actions button { flex: 1 1 auto; }
+}
+
+/* ============ 480px (existing breakpoint, extended) ============ */
+@media (max-width: 480px) {
+  .stats-row { grid-template-columns: 1fr; }
+  .a-content { padding: 1rem; }
+  .a-sidebar { padding: 0.6rem; }
+  .a-menu-item { padding: 0.45rem 0.6rem; font-size: 0.58rem; }
+  .login-card { padding: 1.6rem; max-width: 100%; }
+  .login-avatar { width: 60px; height: 60px; font-size: 1.4rem; }
+  .modal-box { max-width: 100%; border-radius: 14px; }
+  .up-thumb { width: 90px; height: 65px; }
+}
+
+/* ============ 380px : small phones ============ */
+@media (max-width: 380px) {
+  .a-logo { font-size: 1rem; }
+  .a-btn { padding: 0.35rem 0.7rem; font-size: 0.65rem; }
+  .stat-val { font-size: 1.3rem; }
+  .login-card { padding: 1.25rem; }
+  .del-modal .modal-box { max-width: 100%; }
+}
+
+/* ============ Landscape phones (short height) ============ */
+@media (max-height: 480px) and (orientation: landscape) {
+  #login-screen { align-items: flex-start; padding-top: 1rem; }
+  .modal-box { max-height: 94vh; }
+}
+
+/* ============ Touch devices: comfortable tap targets, no color change ============ */
+@media (pointer: coarse) {
+  .t-btn, .modal-x, .drag-handle, .a-menu-item { min-height: 40px; }
+  .a-btn, .a-add-btn, .f-save, .f-cancel, .del-yes, .del-no, .login-btn { min-height: 42px; }
+}
+
+/* ============ 1600px+ : respect max content width on very large screens ============ */
+@media (min-width: 1600px) {
+  .a-nav-left, .a-nav-right { flex-wrap: wrap; }
+  .a-content { max-width: 1600px; margin: 0 auto; }
+}
+
+
+.ov-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 820px) { .ov-grid { grid-template-columns: 1fr; } }
+
+/* Real portfolio logo (replaces text "PM") */
+.a-logo { display: flex; align-items: center; gap: 0.55rem; }
+.a-logo-img { height: 28px; width: auto; object-fit: contain; flex-shrink: 0; }
+.login-avatar-img { width: 62%; height: 62%; object-fit: contain; }
+
+/* Password field: lock icon + show/hide toggle */
+.f-input-wrap { position: relative; display: flex; align-items: center; }
+.f-input-wrap .f-input.has-icon { padding-left: 2.6rem; padding-right: 2.6rem; }
+.f-input-icon { position: absolute; left: 0.9rem; font-size: 0.85rem; pointer-events: none; }
+.f-input-toggle {
+  position: absolute;
+  right: 0.6rem;
+  background: none;
+  border: none;
+  padding: 0.35rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+/* Settings page: "Portfolio Sections" on/off row */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  padding: .3rem 0;
+}
+.toggle-row-title {
+  font-family: var(--fd);
+  font-size: .88rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.toggle-row-desc {
+  font-size: .76rem;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-top: .3rem;
+  max-width: 380px;
+}
+
+/* iOS-style toggle switch */
+.a-switch {
+  flex-shrink: 0;
+  width: 48px;
+  height: 27px;
+  border-radius: 100px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid var(--border);
+  position: relative;
+  cursor: pointer;
+  transition: background .3s ease, border-color .3s ease;
+  padding: 0;
+}
+.a-switch-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1), background .3s ease;
+}
+.a-switch.on {
+  background: linear-gradient(135deg, var(--neon), var(--cyan));
+  border-color: transparent;
+}
+.a-switch.on .a-switch-knob {
+  transform: translateX(21px);
+  background: #06120c;
+}
+.a-switch:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+@media (max-width: 480px) {
+  .toggle-row { flex-wrap: wrap; }
+}
+
+

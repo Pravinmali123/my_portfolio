@@ -1,0 +1,240 @@
+.sfx-root {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.sfx-back {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  contain: layout style;
+}
+
+.sfx-aurora {
+  position: absolute;
+  top: 8%;
+  width: min(46vw, 640px);
+  height: min(70vh, 780px);
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+  will-change: transform;
+  transform: translate3d(0, var(--glow-shift-l, 0px), 0);
+}
+
+.sfx-aurora-l {
+  left: -14vw;
+  background: radial-gradient(circle at 30% 30%, rgba(34, 197, 94, 0.55), rgba(34, 197, 94, 0.12) 45%, transparent 72%);
+  animation: sfxAuroraMorphL 22s ease-in-out infinite alternate;
+}
+
+.sfx-aurora-r {
+  right: -14vw;
+  top: 28%;
+  background: radial-gradient(circle at 70% 40%, rgba(6, 182, 212, 0.5), rgba(6, 182, 212, 0.1) 45%, transparent 72%);
+  animation: sfxAuroraMorphR 26s ease-in-out infinite alternate;
+  transform: translate3d(0, var(--glow-shift-r, 0px), 0);
+}
+
+@keyframes sfxAuroraMorphL {
+  0%   { transform: translate3d(0, var(--glow-shift-l, 0px), 0) scale(1) rotate(0deg); }
+  50%  { transform: translate3d(4%, calc(var(--glow-shift-l, 0px) - 30px), 0) scale(1.18) rotate(8deg); }
+  100% { transform: translate3d(-3%, calc(var(--glow-shift-l, 0px) + 20px), 0) scale(0.94) rotate(-6deg); }
+}
+@keyframes sfxAuroraMorphR {
+  0%   { transform: translate3d(0, var(--glow-shift-r, 0px), 0) scale(1) rotate(0deg); }
+  50%  { transform: translate3d(-5%, calc(var(--glow-shift-r, 0px) + 26px), 0) scale(0.9) rotate(-7deg); }
+  100% { transform: translate3d(3%, calc(var(--glow-shift-r, 0px) - 18px), 0) scale(1.15) rotate(5deg); }
+}
+
+.sfx-blur-layer {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.28;
+  will-change: transform;
+}
+.sfx-blur-1 {
+  width: 34vw;
+  height: 34vw;
+  left: 6vw;
+  top: 55%;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.35), transparent 70%);
+  transform: translate3d(0, calc(var(--scroll-progress, 0) * -70px), 0);
+  transition: transform 0.2s linear;
+}
+.sfx-blur-2 {
+  width: 30vw;
+  height: 30vw;
+  right: 4vw;
+  top: 12%;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.32), transparent 70%);
+  transform: translate3d(0, calc(var(--scroll-progress, 0) * 110px), 0);
+  transition: transform 0.2s linear;
+}
+
+.sfx-beam {
+  position: absolute;
+  top: -30%;
+  width: 160%;
+  height: 220%;
+  opacity: 0.16;
+  will-change: transform;
+  transform-origin: center top;
+}
+.sfx-beam-l {
+  left: -60%;
+  background: linear-gradient(100deg, transparent 42%, rgba(34, 197, 94, 0.55) 49%, transparent 58%);
+  transform: rotate(calc(-14deg + var(--beam-rotate, 0deg)));
+}
+.sfx-beam-r {
+  right: -60%;
+  background: linear-gradient(-100deg, transparent 42%, rgba(6, 182, 212, 0.5) 49%, transparent 58%);
+  transform: rotate(calc(14deg - var(--beam-rotate, 0deg)));
+}
+
+.sfx-side-glow {
+  position: absolute;
+  top: 50%;
+  width: 22vw;
+  max-width: 360px;
+  height: 60vh;
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.4;
+  will-change: transform;
+}
+.sfx-side-glow-l {
+  left: -8vw;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.4), transparent 70%);
+  transform: translate3d(0, calc(-50% + var(--glow-shift-l, 0px) * 1.4), 0);
+}
+.sfx-side-glow-r {
+  right: -8vw;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.4), transparent 70%);
+  transform: translate3d(0, calc(-50% + var(--glow-shift-r, 0px) * 1.4), 0);
+}
+
+.sfx-cursor-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.07), rgba(6, 182, 212, 0.05) 45%, transparent 72%);
+  transform: translate3d(calc(var(--sfx-mx, 50vw) - 50%), calc(var(--sfx-my, 50vh) - 50%), 0);
+  will-change: transform;
+  mix-blend-mode: screen;
+}
+@media (max-width: 900px) {
+  .sfx-cursor-glow { display: none; }
+}
+
+.sfx-particles {
+  position: absolute;
+  inset: 0;
+}
+.sfx-particle {
+  position: absolute;
+  bottom: -5%;
+  border-radius: 50%;
+  background: var(--pcolor, var(--neon));
+  opacity: var(--popacity, 0.4);
+  box-shadow: 0 0 6px var(--pcolor, var(--neon));
+  animation: sfxParticleRise var(--dur, 20s) linear var(--delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+@keyframes sfxParticleRise {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  8% { opacity: var(--popacity, 0.4); }
+  50% {
+    transform: translate3d(calc(var(--drift, 0px) * 0.5), -55vh, 0);
+  }
+  92% { opacity: var(--popacity, 0.4); }
+  100% {
+    transform: translate3d(var(--drift, 0px), -115vh, 0);
+    opacity: 0;
+  }
+}
+
+.sfx-progress-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+}
+.sfx-progress {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  height: min(46vh, 420px);
+  width: 3px;
+}
+.sfx-progress-l { left: 18px; }
+.sfx-progress-r { right: 18px; }
+.sfx-progress-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: visible;
+}
+.sfx-progress-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: calc(var(--scroll-progress, 0) * 100%);
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--cyan), var(--neon));
+  transition: height 0.12s linear;
+}
+.sfx-progress-glow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 14px;
+  height: calc(var(--scroll-progress, 0) * 100%);
+  transform: translateX(-50%);
+  border-radius: 8px;
+  filter: blur(8px);
+  background: linear-gradient(180deg, var(--cyan), var(--neon));
+  opacity: calc(0.35 + var(--scroll-progress, 0) * 0.65);
+  transition: height 0.12s linear, opacity 0.12s linear;
+}
+@media (max-width: 900px) {
+  .sfx-progress { display: none; }
+}
+
+@media (max-width: 700px) {
+  .sfx-aurora { width: 70vw; height: 50vh; filter: blur(70px); }
+  .sfx-side-glow { width: 40vw; filter: blur(80px); }
+  .sfx-beam { opacity: 0.1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sfx-aurora,
+  .sfx-particle {
+    animation: none !important;
+  }
+  .sfx-aurora,
+  .sfx-blur-1,
+  .sfx-blur-2,
+  .sfx-beam-l,
+  .sfx-beam-r,
+  .sfx-side-glow-l,
+  .sfx-side-glow-r,
+  .sfx-cursor-glow {
+    transform: none !important;
+    transition: none !important;
+  }
+  .sfx-particles { display: none; }
+}
