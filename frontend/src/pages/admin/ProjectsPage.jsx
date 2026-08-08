@@ -415,12 +415,22 @@ const projectRows = useMemo(
                 <input className="f-input" value={formValues.technologies} onChange={(e) => setFormValues((prev) => ({ ...prev, technologies: e.target.value }))} placeholder="React.js, Node.js, MongoDB, JWT Auth" />
               </div>
               <div className="f-group">
-                <label className="f-label">Short Description * (card preview)</label>
-                <textarea className="f-textarea" rows="2" value={formValues.description} onChange={(e) => setFormValues((prev) => ({ ...prev, description: e.target.value }))} placeholder="One line description of the project..." />
+                <label className="f-label">
+                  Short Description * (card preview)
+                  <span style={{ fontWeight: 400, opacity: 0.6, textTransform: 'none', marginLeft: '.4rem' }}>
+                    — wrap text in *asterisks* to make it bold
+                  </span>
+                </label>
+                <textarea className="f-textarea" rows="2" value={formValues.description} onChange={(e) => setFormValues((prev) => ({ ...prev, description: e.target.value }))} placeholder="One line description with *bold* words if you want..." />
               </div>
               <div className="f-group">
-                <label className="f-label">Full Description (details modal)</label>
-                <textarea className="f-textarea" rows="3" value={formValues.details} onChange={(e) => setFormValues((prev) => ({ ...prev, details: e.target.value }))} placeholder="Detailed description with features, tech used, challenges solved..." />
+                <label className="f-label">
+                  Full Description (details modal)
+                  <span style={{ fontWeight: 400, opacity: 0.6, textTransform: 'none', marginLeft: '.4rem' }}>
+                    — wrap text in *asterisks* to make it bold
+                  </span>
+                </label>
+                <textarea className="f-textarea" rows="3" value={formValues.details} onChange={(e) => setFormValues((prev) => ({ ...prev, details: e.target.value }))} placeholder="Detailed description with *bold* keywords, features, tech used, challenges solved..." />
               </div>
 
               {/* GITHUB URL */}

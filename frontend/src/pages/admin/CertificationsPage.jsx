@@ -178,12 +178,15 @@ const CertificationsPage = () => {
       }
       closeModal();
       loadCertifications();
-    } catch (error) {
-      showToast('Unable to save certification', 'e');
-      console.error(error);
-    } finally {
-      setSaving(false);
-    }
+   } catch (error) {
+  const serverMsg = error?.response?.data?.message
+    || error?.response?.data?.errors?.[0]?.msg
+    || error?.message;
+  showToast(serverMsg || 'Unable to save certification', 'e');
+  console.error(error);
+} finally {
+  setSaving(false);
+}
   };
 
   const confirmDelete = (certification) => setDeleteTarget(certification);

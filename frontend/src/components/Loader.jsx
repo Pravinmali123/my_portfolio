@@ -1,12 +1,27 @@
 import { useEffect, useState } from 'react';
+import { useLoading } from '../context/LoadingContext';
 
-const Loader = () => {
+const MIN_DISPLAY_MS = 900;
+
+const Loader = ({ waitForReady = false }) => {
+  const { appReady } = useLoading();
   const [visible, setVisible] = useState(true);
+  const [minTimeDone, setMinTimeDone] = useState(false);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setVisible(false), 1500);
+    const timer = window.setTimeout(() => setMinTimeDone(true), MIN_DISPLAY_MS);
     return () => window.clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (waitForReady) return undefined;
+    const timer = window.setTimeout(() => setVisible(false), 1500);
+    return () => window.clearTimeout(timer);
+  }, [waitForReady]);
+
+  useEffect(() => {
+    if (waitForReady && appReady && minTimeDone) setVisible(false);
+  }, [waitForReady, appReady, minTimeDone]);
 
   if (!visible) return null;
 

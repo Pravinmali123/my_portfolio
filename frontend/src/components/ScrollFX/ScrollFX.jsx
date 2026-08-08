@@ -40,7 +40,13 @@ const ScrollFX = () => {
     const isMobile = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768;
 
     if (!reduceMotion && !isMobile) {
-      ScrollTrigger.normalizeScroll(true);
+      // `allowNestedScroll` is required here — without it, normalizeScroll
+      // captures every wheel event for itself, so any inner scrollable
+      // element (like the project details modal's .dm-box) never receives
+      // scroll input on desktop even though it has overflow-y:auto. Touch
+      // devices don't hit this because normalizeScroll is skipped for them
+      // above, which is why "only mobile" was scrolling before.
+      ScrollTrigger.normalizeScroll({ allowNestedScroll: true });
     }
 
     const progressTrigger = ScrollTrigger.create({

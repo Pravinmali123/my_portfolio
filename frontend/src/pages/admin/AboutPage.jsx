@@ -728,8 +728,8 @@ const AboutPage = () => {
             <input className="f-input" value={newEducation.institution} onChange={(e) => setNewEducation((prev) => ({ ...prev, institution: e.target.value }))} placeholder="University / Institute naam" />
           </div>
           <div className="f-group">
-            <label className="f-label">Description (optional)</label>
-            <input className="f-input" value={newEducation.description} onChange={(e) => setNewEducation((prev) => ({ ...prev, description: e.target.value }))} placeholder="React.js, Node.js, ..." />
+<label className="f-label">Description (optional, *bold* words allowed)</label>
+<textarea className="f-textarea" rows="2" value={newEducation.description} onChange={(e) => setNewEducation((prev) => ({ ...prev, description: e.target.value }))} placeholder="React.js, Node.js, ..." />
           </div>
         </div>
         <button type="button" className="a-add-btn" onClick={addEducation}>➕ Add Education</button>

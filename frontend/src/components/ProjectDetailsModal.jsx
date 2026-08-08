@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { getFileUrl } from '../services/api';
 import { isHostedVideoFile } from '../utils/videoUrl';
+import renderFormattedText from '../utils/textFormat.jsx';
 
 const ProjectDetailsModal = ({ project, onClose }) => {
   useEffect(() => {
@@ -52,7 +53,7 @@ const ProjectDetailsModal = ({ project, onClose }) => {
               </span>
             ))}
           </div>
-          <div className="dm-desc">{project.details || project.description}</div>
+          <div className="dm-desc">{renderFormattedText(project.details || project.description)}</div>
           <div className="dm-actions">
             {project.githubUrl ? (
               <a className="dm-btn b-gh" href={project.githubUrl} target="_blank" rel="noreferrer">

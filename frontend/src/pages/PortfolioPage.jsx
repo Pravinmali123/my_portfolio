@@ -11,6 +11,7 @@ import useUnifiedScroll from '../hooks/useUnifiedScroll';
 import useScrollReveal from '../hooks/useScrollReveal';
 import { useExpandableList } from '../hooks/useExpandableList';
 import ViewMoreButton from '../components/ViewMoreButton';
+import { useLoading } from '../context/LoadingContext';
 import {
   createMessage,
   getAbout,
@@ -22,6 +23,7 @@ import {
 } from '../services/contentService';
 import { getFileUrl, getResumeDownloadUrl } from '../services/api';
 import { DEFAULT_ABOUT, DEFAULT_PROJECTS, DEFAULT_SKILLS } from '../utils/defaultData';
+import renderFormattedText from '../utils/textFormat.jsx';
 
 const handleEmailClick = (e, email) => {
   e.preventDefault();
@@ -100,7 +102,7 @@ const ProjectCard = ({ project, onOpen, className = '' }) => {
           ))}
         </div>
         <h3 className="pr-title">{project.title}</h3>
-        <p className="pr-desc">{project.description}</p>
+        <p className="pr-desc">{renderFormattedText(project.description)}</p>
       </div>
       <div className="pr-strip">
         <button type="button" className="pr-strip-btn gh" onClick={(e) => openLink(e, project.githubUrl)}>GitHub</button>
@@ -155,6 +157,7 @@ const PortfolioPage = () => {
 
 const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
   const toast = useToast();
+const { setAppReady } = useLoading();
   useScrollCinematic();
 
   // 3D tilt for the hero profile ring: rotates toward the cursor and
@@ -461,6 +464,7 @@ const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
         console.error(error);
       } finally {
         if (isInitialLoad && isMounted) setLoadingState(false);
+        setAppReady(true);
       }
     };
 
@@ -720,7 +724,7 @@ const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
               <span className="ctype" />
             </div>
             <p className="hero-desc">
-              Passionate <strong>Full Stack Developer</strong> from Surat, Gujarat. Strong in <strong>React.js, Node.js, Express.js</strong> and databases like <strong>MongoDB &amp; MySQL</strong>. I build responsive, clean web apps.
+              Passionate <strong>{about.title}</strong> from {about.location}. Strong in <strong>React.js, Node.js, Express.js</strong> and databases like <strong>MongoDB &amp; MySQL</strong>. I build responsive, clean web apps.
             </p>
             <div className="hero-btns">
               <a href="#contact" className="btn-p btn-p-glow"><span className="btn-p-shine" /><i className="fa-solid fa-briefcase" /><span>Hire Me</span></a>
@@ -822,7 +826,7 @@ const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
               <div className="s-tag">About Me</div>
               <h2 className="s-title">Who Am <span>I?</span></h2>
               <div className="s-line" />
-              <p className="about-intro">{about.summary}</p>
+              <p className="about-intro">{renderFormattedText(about.summary)}</p>
            <div className="stats-g" ref={statsRef}>
   {['Projects', 'Years Exp', 'Technologies'].map((label, idx) => {
     const counts = [about.projectsCompleted, about.yearsExperience, about.technologiesLearned];
@@ -1096,7 +1100,7 @@ const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
                           {new Date(cert.issueDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
                         </div>
                       )}
-                      {cert.description && <p className="cert-desc">{cert.description}</p>}
+                      {cert.description && <p className="cert-desc">{renderFormattedText(cert.description)}</p>}
                       {(cert.image || cert.credentialUrl) && (
                         <button
                           type="button"
@@ -1158,7 +1162,7 @@ const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
                   <div className={`exp-per ${idx % 2 === 0 ? 'c' : 'm'}`}>{edu.period}</div>
                   <div className="exp-t">{edu.title}</div>
                   <div className="exp-co">{edu.institution}</div>
-                  {edu.description && <div className="exp-desc">{edu.description}</div>}
+                  {edu.description && <div className="exp-desc">{renderFormattedText(edu.description)}</div>}
                 </div>
               ))}
               <div style={{ marginTop: '1.3rem' }}>
@@ -1287,7 +1291,7 @@ const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
       </section>
 
       <footer>
-        <p>Built by <span>{about.name}</span> · Full Stack Developer · Surat, Gujarat</p>
+     <p>Built by <span>{about.name}</span> · {about.title} · {about.location}</p>
       </footer>
 
      <Suspense fallback={null}>

@@ -1,10 +1,7 @@
-import dotenv from 'dotenv';
+import './config/loadEnv.js';   // ⚠️ SAUTHI PEHLA — dotenv.config() tarat j run thai jay
 import app from './app.js';
 import connectDB from './config/mongodb.js';
 import User from './models/User.js';
-
-// Load environment variables
-dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 

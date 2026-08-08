@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import PortfolioPage from './pages/PortfolioPage';
 import AdminLoginPage from './pages/admin/LoginPage';
 import ProtectedRoute from './routes/ProtectedRoute';
@@ -7,6 +7,7 @@ import Toast from './components/Toast';
 import Cursor from './components/Cursor';
 import Loader from './components/Loader';
 import { ToastProvider } from './context/ToastContext';
+import { LoadingProvider } from './context/LoadingContext';
 
 const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'));
 const AdminOverviewPage = lazy(() => import('./pages/admin/OverviewPage'));
@@ -18,13 +19,17 @@ const AdminMessagesPage = lazy(() => import('./pages/admin/MessagesPage'));
 const AdminSettingsPage = lazy(() => import('./pages/admin/SettingsPage'));
 
 const App = () => {
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+
   return (
     <ToastProvider>
-      <Cursor />
-      <Loader />
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route path="/" element={<PortfolioPage />} />
+      <LoadingProvider>
+        <Cursor />
+        {isHome && <Loader waitForReady />}
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route path="/" element={<PortfolioPage />} />
           <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route
             path="/admin/*"
@@ -44,9 +49,10 @@ const App = () => {
             <Route path="settings" element={<AdminSettingsPage />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Suspense>
-      <Toast />
+      </Routes>
+        </Suspense>
+        <Toast />
+      </LoadingProvider>
     </ToastProvider>
   );
 };

@@ -560,8 +560,8 @@ section{position:relative;z-index:1;}
 #skills .reveal.visible{transform:translateX(0);}
 
 /* RESUME — slide down from TOP + scale */
-#resume .reveal{transform:translateY(-60px) scale(.94);}
-#resume .reveal.visible{transform:translateY(0) scale(1);}
+#resume .reveal{transform:translateY(30px);}
+#resume .reveal.visible{transform:translateY(0);}
 
 /* CERTIFICATIONS — a slightly more elaborate "modern" entrance than the
    plain fade: heading + carousel both rise in with a soft blur-out, the
@@ -579,8 +579,8 @@ section{position:relative;z-index:1;}
 #certifications .cert-carousel-outer.reveal{transition-delay:.12s;}
 
 /* RESUME — timeline line redraw + item stagger on every entry */
-.exp-item{opacity:0;transform:translateY(22px) scale(.96);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);will-change:transform,opacity;}
-.exp-grid.visible .exp-item{opacity:1;transform:translateY(0) scale(1);}
+.exp-item{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);will-change:transform,opacity;}
+.exp-grid.visible .exp-item{opacity:1;transform:translateY(0);}
 .exp-item::before{transform:scaleY(0);transform-origin:top;transition:transform .8s cubic-bezier(.16,1,.3,1);will-change:transform;}
 .exp-grid.visible .exp-item::before{transform:scaleY(1);}
 .exp-item:nth-child(1){transition-delay:.05s;}
@@ -649,7 +649,8 @@ section{position:relative;z-index:1;}
   .reveal.visible,
   .sk-card,.sk-icon,.sk-bar,
   .ct-card,.f-grp,.sub-btn,
-  .exp-item,.exp-item::before{
+  .exp-item,.exp-item::before,
+  .pf-btn,.pr-card{
     transition:none !important;
     animation:none !important;
     opacity:1 !important;
@@ -969,8 +970,8 @@ section{position:relative;z-index:1;}
 /* ABOUT */
 #about{background:transparent;}
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start;}
-.about-intro{font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:1.3rem;}
-.about-intro strong{color:var(--text);}
+.about-intro{font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:1.3rem;white-space:pre-line;}
+.about-intro strong{color:var(--text);font-weight:700;}
 .stats-g{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-bottom:1.5rem;}
 .s-card{padding:1rem;background:var(--glass);border:1px solid var(--border);border-radius:10px;text-align:center;transition:all .3s;position:relative;min-width:0;}
 .s-card:hover{border-color:rgba(34,197,94,.35);}
@@ -1057,7 +1058,24 @@ section{position:relative;z-index:1;}
 
 /* PROJECTS */
 #projects{background:transparent;}
-.pf-btns{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:2rem;}
+/* PROJECTS — heading rises with a soft blur-out on entry */
+#projects .reveal-heading{transform:translateY(28px);filter:blur(5px);}
+#projects .reveal-heading.visible{transform:translateY(0);filter:blur(0);}
+
+/* PROJECTS — filter pills pop in individually with a slight bounce, staggered left→right */
+.pf-btns.reveal{opacity:1;transform:none;transition:none;}
+.pf-btns .pf-btn{opacity:0;transform:translateY(14px) scale(.88);transition:opacity .5s cubic-bezier(.34,1.56,.64,1),transform .5s cubic-bezier(.34,1.56,.64,1);will-change:transform,opacity;}
+.pf-btns.visible .pf-btn{opacity:1;transform:translateY(0) scale(1);}
+.pf-btns:not(.visible) .pf-btn{transition-delay:0s;}
+.pf-btns .pf-btn:nth-child(1){transition-delay:.03s;}
+.pf-btns .pf-btn:nth-child(2){transition-delay:.08s;}
+.pf-btns .pf-btn:nth-child(3){transition-delay:.13s;}
+.pf-btns .pf-btn:nth-child(4){transition-delay:.18s;}
+.pf-btns .pf-btn:nth-child(5){transition-delay:.23s;}
+/* Sticky so it settles in place instead of glitching/jumping as you
+   scroll — but no background box, so it still looks exactly like it did
+   before (transparent, blends into the page). */
+.pf-btns{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:2rem;position:sticky;top:64px;z-index:40;}
 .pf-btn{padding:.35rem .9rem;border:1px solid var(--border);border-radius:100px;font-family:var(--fm);font-size:.65rem;color:var(--muted);background:transparent;cursor:none;letter-spacing:.1em;text-transform:uppercase;transition:all .3s;}
 .pf-btn.active{border-color:var(--cyan);color:var(--cyan);background:rgba(6,182,212,.05);}
 .pr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:1.2rem;}
@@ -1069,10 +1087,8 @@ section{position:relative;z-index:1;}
    (bounce) so this section reads as its own distinct moment. transform is
    driven only by this rule + the :hover rule above, both on the same
    .5s timing, so entrance and hover-lift never fight or jump. */
-.pr-grid .pr-card{opacity:0;will-change:transform,opacity;}
-.pr-grid .pr-card:nth-child(odd){transform:translateY(45px) translateX(-38px) rotate(-6deg) scale(.92);}
-.pr-grid .pr-card:nth-child(even){transform:translateY(45px) translateX(38px) rotate(6deg) scale(.92);}
-.pr-grid.visible .pr-card{opacity:1;transform:translateY(0) translateX(0) rotate(0deg) scale(1);}
+.pr-grid .pr-card{opacity:0;will-change:transform,opacity;transform:translateY(40px) scale(.96);}
+.pr-grid.visible .pr-card{opacity:1;transform:translateY(0) scale(1);}
 .pr-grid .pr-card:nth-child(3n+1){transition-delay:.03s;}
 .pr-grid .pr-card:nth-child(3n+2){transition-delay:.11s;}
 .pr-grid .pr-card:nth-child(3n+3){transition-delay:.19s;}
@@ -1080,9 +1096,9 @@ section{position:relative;z-index:1;}
 
 /* Card image area */
 .pr-img-wrap{position:relative;height:210px;overflow:hidden;background:var(--bg3);flex-shrink:0;}
-.pr-thumb{width:100%;height:100%;transition:transform .5s ease;}
+.pr-thumb{width:100%;height:100%;transition:transform .5s ease,filter .35s ease;}
 .pr-thumb svg,.pr-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
-.pr-card:hover .pr-thumb{transform:scale(1.05);}
+.pr-card:hover .pr-thumb{transform:scale(1.05);filter:blur(2.5px);}
 .pr-img-bot{position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,rgba(5,5,5,.9));z-index:1;}
 .pr-badge-cat{position:absolute;top:10px;left:10px;font-family:var(--fm);font-size:.58rem;font-weight:700;padding:.2rem .6rem;border-radius:100px;z-index:2;}
 .pr-badge-cat.fs{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.4);color:var(--neon);}
@@ -1092,9 +1108,13 @@ section{position:relative;z-index:1;}
 .pr-vid-badge{position:absolute;bottom:12px;right:10px;font-family:var(--fm);font-size:.56rem;font-weight:700;padding:.18rem .55rem;border-radius:100px;background:rgba(244,114,182,.18);border:1px solid rgba(244,114,182,.45);color:var(--pink);z-index:3;}
 
 /* Hover overlay */
-.pr-img-hover{position:absolute;inset:0;background:rgba(5,5,5,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;opacity:0;transition:opacity .3s;z-index:4;backdrop-filter:blur(4px);}
+/* Was a near-opaque block (.88 alpha) that completely hid the thumbnail
+   behind it. Now a light dark-tint so the project image stays visible
+   underneath the "GitHub / Demo / Video / Details" actions, in both
+   themes — the text keeps its own drop-shadow for legibility. */
+.pr-img-hover{position:absolute;inset:0;background:rgba(4,6,10,.42);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;opacity:0;transition:opacity .3s;z-index:4;}
 .pr-card:hover .pr-img-hover{opacity:1;}
-.pr-hov-title{font-family:var(--fd);font-size:.9rem;font-weight:700;color:#fff;text-align:center;padding:0 1rem;}
+.pr-hov-title{font-family:var(--fd);font-size:.9rem;font-weight:700;color:#fff;text-align:center;padding:0 1rem;text-shadow:0 2px 10px rgba(0,0,0,.85);}
 .pr-hov-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding:0 1rem;width:100%;}
 .hov-btn{padding:.45rem .6rem;border-radius:7px;font-family:var(--fm);font-size:.65rem;font-weight:600;cursor:none;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:.35rem;text-decoration:none;border:1px solid;}
 .h-gh{border-color:rgba(34,197,94,.4);color:var(--neon);background:rgba(34,197,94,.08);}
@@ -1113,7 +1133,8 @@ section{position:relative;z-index:1;}
 .pr-tag.cy{background:rgba(6,182,212,.06);border-color:rgba(6,182,212,.15);color:var(--cyan);}
 .pr-tag.pu{background:rgba(167,139,250,.06);border-color:rgba(167,139,250,.15);color:var(--purple);}
 .pr-title{font-family:var(--fd);font-size:1.05rem;font-weight:700;margin-bottom:.4rem;}
-.pr-desc{font-size:.82rem;color:var(--muted);line-height:1.6;}
+.pr-desc{font-size:.82rem;color:var(--muted);line-height:1.6;white-space:pre-line;}
+.pr-desc strong,.dm-desc strong{font-size:1.12em;color:var(--text);font-weight:700;}
 
 /* Bottom strip */
 .pr-strip{display:flex;border-top:1px solid rgba(255,255,255,.05);flex-shrink:0;}
@@ -1389,7 +1410,8 @@ section{position:relative;z-index:1;}
 .cert-title{font-family:var(--fd);font-weight:700;font-size:1.02rem;color:var(--text);line-height:1.35;}
 .cert-issuer{font-family:var(--fb);font-size:.82rem;color:var(--muted);}
 .cert-date{display:flex;align-items:center;gap:.4rem;font-family:var(--fm);font-size:.68rem;color:var(--muted);opacity:.85;}
-.cert-desc{font-family:var(--fb);font-size:.78rem;color:var(--muted);line-height:1.55;margin:.1rem 0 0;}
+.cert-desc{font-family:var(--fb);font-size:.78rem;color:var(--muted);line-height:1.55;margin:.1rem 0 0;white-space:pre-line;}
+.cert-desc strong{color:var(--text);font-weight:700;}
 .cert-link{display:inline-flex;align-items:center;gap:.35rem;margin-top:.3rem;font-family:var(--fm);font-size:.72rem;color:var(--neon);text-decoration:none;}
 .cert-link:hover{color:var(--cyan);}
 .cert-link i{font-size:.62rem;}
@@ -1555,7 +1577,8 @@ section{position:relative;z-index:1;}
 .exp-per.m{color:var(--muted);}
 .exp-t{font-family:var(--fd);font-size:.92rem;font-weight:700;margin-bottom:.15rem;}
 .exp-co{font-size:.8rem;color:var(--muted);}
-.exp-desc{font-size:.78rem;color:var(--muted);margin-top:.55rem;line-height:1.6;}
+.exp-desc{font-size:.78rem;color:var(--muted);margin-top:.55rem;line-height:1.6;white-space:pre-line;}
+.exp-desc strong{color:var(--text);font-weight:700;}
 
 /* CONTACT */
 #contact{background:transparent;}
@@ -1601,7 +1624,7 @@ section{position:relative;z-index:1;}
 .dm-x{background:none;border:none;color:var(--muted);font-size:1.3rem;cursor:none;transition:color .2s;flex-shrink:0;line-height:1;padding:.2rem;}
 .dm-x:hover{color:var(--red);}
 .dm-tags-row{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.9rem;}
-.dm-desc{font-size:.84rem;color:var(--muted);line-height:1.7;margin-bottom:1.2rem;}
+.dm-desc{font-size:.84rem;color:var(--muted);line-height:1.7;margin-bottom:1.2rem;white-space:pre-line;}
 .dm-actions{display:flex;gap:.55rem;flex-wrap:wrap;}
 .dm-btn{padding:.55rem 1.1rem;border-radius:8px;font-family:var(--fm);font-size:.72rem;font-weight:600;text-decoration:none;cursor:none;transition:all .25s;display:inline-flex;align-items:center;gap:.4rem;border:1px solid;}
 .b-gh{border-color:rgba(34,197,94,.35);color:var(--neon);background:rgba(34,197,94,.07);}
@@ -1697,7 +1720,7 @@ footer span{color:var(--neon);}footer a{color:var(--cyan);text-decoration:none;}
   .sk-name{font-size:.82rem;}
  
   /* PROJECTS */
-  .pf-btns{gap:.35rem;}
+  .pf-btns{gap:.35rem;top:54px;}
   .pf-btn{font-size:.62rem;padding:.3rem .7rem;}
   .pr-grid{grid-template-columns:1fr;gap:1rem;}
   .pr-img-wrap{height:190px;}
@@ -1741,7 +1764,7 @@ footer span{color:var(--neon);}footer a{color:var(--cyan);text-decoration:none;}
   .lang-flag{font-size:1.2rem;height:1.5em;}
   .lang-name{font-size:.75rem;}
   .lang-level{font-size:.58rem;}
-  .pf-btns{gap:.3rem;}
+  .pf-btns{gap:.3rem;top:50px;}
   .pf-btn{font-size:.58rem;padding:.28rem .6rem;}
   .tab{font-size:.58rem;padding:.28rem .6rem;}
   .s-title{font-size:1.75rem;}
@@ -1922,8 +1945,10 @@ body, nav, .mob-menu, .pr-card, .exp-item, .a-card, .p-img, .login-card {
 :root[data-theme="light"] .login-card{ background:rgba(255,255,255,.9); }
 :root[data-theme="light"] .fc{ background:rgba(255,255,255,.85); color:var(--text); }
 :root[data-theme="light"] .pr-img-bot{ background:linear-gradient(transparent, rgba(244,246,249,.92)); }
-:root[data-theme="light"] .pr-img-hover{ background:rgba(255,255,255,.9); }
-:root[data-theme="light"] .pr-hov-title{ color:#111827; }
+/* Same dark, semi-transparent tint in light mode too (rather than an
+   opaque white block) so the thumbnail stays visible on hover; keep the
+   title white with a shadow instead of switching to dark text. */
+:root[data-theme="light"] .pr-img-hover{ background:rgba(4,6,10,.42); }
 :root[data-theme="light"] .p-img{ background:linear-gradient(135deg,#e9edf3,#dde2ea); }
 :root[data-theme="light"] .top-btn{ background:rgba(255,255,255,.7); }
 :root[data-theme="light"] .top-btn:hover{ color:#050505; }
