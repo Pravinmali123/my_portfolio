@@ -63,16 +63,31 @@ export const downloadPrimaryResume = async (req, res, next) => {
       : `${resume.filename || 'Resume'}.pdf`;
 
     // New uploads: fileUrl is a full Cloudinary URL (persistent storage).
-    // Redirect to it with Cloudinary's fl_attachment flag added, which is
-    // what makes the browser download the file instead of opening it
-    // inline — the equivalent of res.download()'s Content-Disposition
-    // header, but for a file that isn't on this server's disk anymore.
+    // We used to redirect to the URL with Cloudinary's fl_attachment flag
+    // added, but that transformation isn't reliable for resource_type
+    // 'raw' (Cloudinary tries to generate a derived copy on the fly, which
+    // can fail depending on plan/settings and comes back as a broken
+    // response in the browser — ERR_INVALID_RESPONSE). Instead, fetch the
+    // file ourselves and stream it back with the Content-Disposition
+    // header set directly, which forces the download with the right
+    // filename regardless of Cloudinary's transformation support.
     if (/^https?:\/\//i.test(resume.fileUrl)) {
-      const attachmentName = encodeURIComponent(downloadName.replace(/\.pdf$/i, ''));
-      const attachmentUrl = resume.fileUrl.includes('/upload/')
-        ? resume.fileUrl.replace('/upload/', `/upload/fl_attachment:${attachmentName}/`)
-        : resume.fileUrl;
-      return res.redirect(attachmentUrl);
+      const safeBaseName = downloadName
+        .replace(/\.pdf$/i, '')
+        .replace(/[^a-zA-Z0-9 _-]/g, '')
+        .trim()
+        .replace(/\s+/g, '_') || 'Resume';
+
+      const cloudinaryResponse = await fetch(resume.fileUrl);
+      if (!cloudinaryResponse.ok) {
+        return res.status(502).json({ success: false, message: 'Could not fetch resume file' });
+      }
+
+      res.setHeader('Content-Type', resume.mimeType || 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="${safeBaseName}.pdf"`);
+
+      const arrayBuffer = await cloudinaryResponse.arrayBuffer();
+      return res.send(Buffer.from(arrayBuffer));
     }
 
     // Legacy fallback: a resume uploaded before this project switched to
