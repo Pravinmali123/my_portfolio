@@ -148,9 +148,15 @@ const PortfolioPage = () => {
     return () => document.removeEventListener('pointerdown', handleOutside);
   }, [activeStat]);
 
+const showSkillsStat = about.statCardType === 'skills';
+  const skillsStatNumber = (about.statCardValue !== null && about.statCardValue !== undefined && about.statCardValue !== '')
+    ? about.statCardValue
+    : skills.length;
+  const statLabels = ['Projects', showSkillsStat ? 'Skills' : 'Years Exp', 'Technologies'];
+  const statCounts = [about.projectsCompleted, showSkillsStat ? skillsStatNumber : about.yearsExperience, about.technologiesLearned];
   const statTooltips = [
     `${about.projectsCompleted}+ Projects Completed`,
-    `Learning + Practice: ${about.yearsExperience}+ years`,
+showSkillsStat ? `${skillsStatNumber}+ Skills` : `${about.yearsExperience}+ Years Experience`,
     `${about.technologiesLearned}+ Technologies Learned`,
   ];
   const toggleStat = (idx) => setActiveStat((prev) => (prev === idx ? null : idx));
@@ -427,6 +433,9 @@ const { setAppReady } = useLoading();
                 : DEFAULT_ABOUT.location,
             titles: payload.titles && payload.titles.length ? payload.titles : DEFAULT_ABOUT.titles,
             showGithubActivity: Boolean(payload.showGithubActivity),
+            statCardType: payload.statCardType || DEFAULT_ABOUT.statCardType,
+            statCardValue: (payload.statCardValue === null || payload.statCardValue === undefined) ? DEFAULT_ABOUT.statCardValue : payload.statCardValue,
+            showSkillPercentage: payload.showSkillPercentage === undefined ? DEFAULT_ABOUT.showSkillPercentage : Boolean(payload.showSkillPercentage),
             profileImage: payload.profileImage ? getFileUrl(payload.profileImage) : null,
           });
         }
@@ -827,12 +836,10 @@ const { setAppReady } = useLoading();
               <h2 className="s-title">Who Am <span>I?</span></h2>
               <div className="s-line" />
               <p className="about-intro">{renderFormattedText(about.summary)}</p>
-           <div className="stats-g" ref={statsRef}>
-  {['Projects', 'Years Exp', 'Technologies'].map((label, idx) => {
-    const counts = [about.projectsCompleted, about.yearsExperience, about.technologiesLearned];
-    return (
+  <div className="stats-g" ref={statsRef}>
+  {statLabels.map((label, idx) => (
       <div
-        key={label}
+        key={idx}
         className={`s-card s-card-hover${activeStat === idx ? ' active' : ''}`}
         role="button"
         tabIndex={0}
@@ -840,13 +847,11 @@ const { setAppReady } = useLoading();
         onClick={() => toggleStat(idx)}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleStat(idx); } }}
       >
-        <div className="s-num" data-count={counts[idx]}>0</div>
+        <div className="s-num" data-count={statCounts[idx]}>0</div>
         <div className="s-lbl">{label}</div>
-        {/* Desktop (real hover devices) only — shown/hidden purely by CSS :hover */}
         <div className="s-tooltip">{statTooltips[idx]}</div>
       </div>
-    );
-  })}
+  ))}
 </div>
 {/* Touch/mobile only — tapping a card above opens this full-width panel
     instead of a cramped per-card popup, so it never overflows or overlaps
@@ -914,7 +919,7 @@ const { setAppReady } = useLoading();
                       <div className="sk-name">{skill.name}</div>
                     </div>
                   </div>
-                  <div className="sk-pct">{skill.proficiency}%</div>
+            {about.showSkillPercentage && <div className="sk-pct">{skill.proficiency}%</div>}
                 </div>
                 <div className="sk-bar-bg">
                   <div className="sk-bar" data-pct={skill.proficiency} style={{ width: `${skill.proficiency}%` }} />

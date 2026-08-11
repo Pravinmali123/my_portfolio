@@ -33,6 +33,9 @@ titles: [
     'UI/UX Enthusiast',
   ],
   showGithubActivity: false,
+  statCardType: 'years',
+  statCardValue: null,
+  showSkillPercentage: true,
 };
 
 export const DEFAULT_SKILLS = [

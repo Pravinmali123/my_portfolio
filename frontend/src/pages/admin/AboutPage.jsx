@@ -24,6 +24,8 @@ const emptyForm = {
   yearsExperience: '',
   projectsCompleted: '',
   technologiesLearned: '',
+  statCardType: 'years',
+  statCardValue: '',
   titles: '',
 };
 
@@ -96,6 +98,8 @@ const AboutPage = () => {
           yearsExperience: a.yearsExperience ?? '',
           projectsCompleted: a.projectsCompleted ?? '',
           technologiesLearned: a.technologiesLearned ?? '',
+          statCardType: a.statCardType || 'years',
+          statCardValue: a.statCardValue ?? '',
           titles: Array.isArray(a.titles) ? a.titles.join(', ') : '',
         });
         setLanguages(Array.isArray(a.languages) ? a.languages : []);
@@ -138,6 +142,8 @@ const AboutPage = () => {
         yearsExperience: Number(form.yearsExperience) || 0,
         projectsCompleted: Number(form.projectsCompleted) || 0,
         technologiesLearned: Number(form.technologiesLearned) || 0,
+        statCardType: form.statCardType,
+        statCardValue: form.statCardValue === '' ? null : Number(form.statCardValue) || 0,
         titles: form.titles
           .split(',')
           .map((t) => t.trim())
@@ -508,20 +514,60 @@ const AboutPage = () => {
         </div>
         <div className="form-row2">
           <div className="f-group">
-            <label className="f-label">Years of Experience</label>
-            <input className="f-input" type="number" value={form.yearsExperience} onChange={(e) => updateField('yearsExperience', e.target.value)} placeholder="1" />
-          </div>
-          <div className="f-group">
             <label className="f-label">Projects Completed</label>
             <input className="f-input" type="number" value={form.projectsCompleted} onChange={(e) => updateField('projectsCompleted', e.target.value)} placeholder="5" />
           </div>
-        </div>
-        <div className="form-row2">
           <div className="f-group">
             <label className="f-label">Technologies Learned</label>
             <input className="f-input" type="number" value={form.technologiesLearned} onChange={(e) => updateField('technologiesLearned', e.target.value)} placeholder="10" />
           </div>
         </div>
+        <div className="form-row2">
+          <div className="f-group">
+            <label className="f-label">2nd Stat Card Shows</label>
+            <select className="f-select" value={form.statCardType} onChange={(e) => updateField('statCardType', e.target.value)}>
+              <option value="years">Years of Experience</option>
+              <option value="skills">Total Skills</option>
+            </select>
+          </div>
+        </div>
+        {form.statCardType === 'skills' ? (
+          <div className="form-row2">
+            <div className="f-group">
+              <label className="f-label">Skills Count to Show</label>
+              <input
+                className="f-input"
+                type="number"
+                value={form.statCardValue}
+                onChange={(e) => updateField('statCardValue', e.target.value)}
+                placeholder="e.g. 12 (blank = auto count from Skills list)"
+              />
+              <div style={{ fontSize: '.68rem', color: 'var(--muted)', marginTop: '.4rem' }}>
+                Live preview: card will show <strong style={{ color: 'var(--neon)' }}>
+                  {form.statCardValue === '' ? '(auto count)' : form.statCardValue}+ Skills
+                </strong>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="form-row2">
+            <div className="f-group">
+              <label className="f-label">Years of Experience</label>
+              <input
+                className="f-input"
+                type="number"
+                value={form.yearsExperience}
+                onChange={(e) => updateField('yearsExperience', e.target.value)}
+                placeholder="1"
+              />
+              <div style={{ fontSize: '.68rem', color: 'var(--muted)', marginTop: '.4rem' }}>
+                Live preview: card will show <strong style={{ color: 'var(--neon)' }}>
+                  {form.yearsExperience || 0}+ Years Experience
+                </strong>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="f-group">
           <label className="f-label">Typing Titles (comma separated)</label>
           <input className="f-input" value={form.titles} onChange={(e) => updateField('titles', e.target.value)} placeholder="Full Stack Developer, React.js Developer, Node.js Developer" />

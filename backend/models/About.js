@@ -89,6 +89,19 @@ contactInfo: {
       type: Boolean,
       default: false,
     },
+    statCardType: {
+      type: String,
+      enum: ['years', 'skills'],
+      default: 'years',
+    },
+    statCardValue: {
+      type: Number,
+      default: null,
+    },
+    showSkillPercentage: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
   //   title: {

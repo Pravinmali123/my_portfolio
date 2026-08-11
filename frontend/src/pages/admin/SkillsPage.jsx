@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { createSkill, deleteSkill, getSkills, updateSkill } from '../../services/contentService';
+import { createSkill, deleteSkill, getSkills, updateSkill, getAbout, updateAbout } from '../../services/contentService';
 import { useToast } from '../../context/ToastContext';
 import { useDragReorder, reorderArray } from '../../hooks/useDragReorder';
 import { useExpandableList } from '../../hooks/useExpandableList';
@@ -19,6 +19,45 @@ const SkillsPage = () => {
   const [formValues, setFormValues] = useState(initialSkillForm);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const { showToast } = useToast();
+  const [aboutData, setAboutData] = useState(null);
+  const [showPercentage, setShowPercentage] = useState(true);
+  const [pctToggleBusy, setPctToggleBusy] = useState(false);
+
+  const loadAboutSetting = async () => {
+    try {
+      const response = await getAbout();
+      if (response.success) {
+        setAboutData(response.data);
+        setShowPercentage(response.data.showSkillPercentage === undefined ? true : Boolean(response.data.showSkillPercentage));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handlePercentageToggle = async () => {
+    if (!aboutData) {
+      showToast('Still loading settings, please try again in a moment', 'e');
+      return;
+    }
+    const nextValue = !showPercentage;
+    setShowPercentage(nextValue);
+    setPctToggleBusy(true);
+    try {
+      const payload = { ...aboutData, showSkillPercentage: nextValue };
+      const response = await updateAbout(payload);
+      if (response.success) {
+        setAboutData(response.data);
+      }
+      showToast(`Skill percentage turned ${nextValue ? 'ON' : 'OFF'}`, 's');
+    } catch (error) {
+      setShowPercentage(!nextValue);
+      showToast('Unable to update this setting', 'e');
+      console.error(error);
+    } finally {
+      setPctToggleBusy(false);
+    }
+  };
 
 const loadSkills = async () => {
     try {
@@ -34,6 +73,7 @@ const loadSkills = async () => {
 
   useEffect(() => {
     loadSkills();
+    loadAboutSetting();
   }, []);
 
   // ---------- Drag & drop reorder ----------
@@ -165,6 +205,26 @@ const loadSkills = async () => {
       <div className="a-page-header">
         <div className="a-page-title">Manage <span>Skills</span></div>
         <button type="button" className="a-add-btn" onClick={() => openSkillModal(null)}>+ Add Skill</button>
+      </div>
+      <div className="a-card">
+        <div className="modal-body">
+          <div className="toggle-row">
+            <div className="toggle-row-text">
+              <div className="toggle-row-title"><i className="fa-solid fa-percent" /> Show Skill Percentage</div>
+              <div className="toggle-row-desc">Shows the proficiency % number on each skill card on your live portfolio. Turn off to hide just the number — the progress bar always stays visible.</div>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={showPercentage}
+              className={`a-switch ${showPercentage ? 'on' : ''}`}
+              onClick={handlePercentageToggle}
+              disabled={pctToggleBusy || !aboutData}
+            >
+              <span className="a-switch-knob" />
+            </button>
+          </div>
+        </div>
       </div>
       <div className="a-card">
         <div className="a-card-head">
